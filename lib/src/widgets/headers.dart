@@ -219,3 +219,58 @@ class _WavesHeaderPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+
+class GradientWavesHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: CustomPaint(
+        painter: _GradientWavesHeaderPainter(),
+      ),
+    );
+  }
+}
+
+class _GradientWavesHeaderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+
+    final Rect rect = Rect.fromCircle(
+      center: Offset(165.0, 55.0),
+      radius: 180
+    );
+
+    final Gradient gradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color(0xff6d05e8),
+        Color(0xffc012ff),
+        Color(0xff6d05fa),
+      ]
+    );
+
+    final paint = Paint()..shader = gradient.createShader(rect);
+    paint.color = Color(0xff615aab);
+    paint.style = PaintingStyle.fill;
+    paint.strokeWidth = 10;
+
+    final path = Path();
+    path.lineTo(0, h * 0.30);
+    path.quadraticBezierTo(w * 0.25, h * 0.40, w * 0.5, h * 0.30);
+    path.quadraticBezierTo(w * 0.75, h * 0.20, w, h * 0.30);
+    path.lineTo(w, 0);
+    
+    // path.quadraticBezierTo(w * 0.25, h * 0.35, w * 0.5, h * 0.30);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
