@@ -179,3 +179,43 @@ class _CurveHeaderPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+
+class WavesHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: CustomPaint(
+        painter: _WavesHeaderPainter(),
+      ),
+    );
+  }
+}
+
+class _WavesHeaderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+
+    final paint = Paint();
+    paint.color = Color(0xff615aab);
+    paint.style = PaintingStyle.fill;
+    paint.strokeWidth = 10;
+
+    final path = Path();
+    path.lineTo(0, h * 0.30);
+    path.quadraticBezierTo(w * 0.25, h * 0.40, w * 0.5, h * 0.30);
+    path.quadraticBezierTo(w * 0.75, h * 0.20, w, h * 0.30);
+    path.lineTo(w, 0);
+    
+    // path.quadraticBezierTo(w * 0.25, h * 0.35, w * 0.5, h * 0.30);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
