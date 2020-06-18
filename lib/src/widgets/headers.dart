@@ -67,3 +67,40 @@ class _DiagonalHeaderPainter extends CustomPainter {
   }
 
 }
+
+class TriangleHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: CustomPaint(
+        painter: _TriangleHeaderPainter(),
+      ),
+    );
+  }
+}
+
+class _TriangleHeaderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+
+    final paint = Paint();
+    paint.color = Color(0xff615aab);
+    paint.style = PaintingStyle.fill;
+    paint.strokeWidth = 10;
+
+    final path = Path();
+    path.lineTo(w, h);
+    path.lineTo(w, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
