@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:custom_painter/src/pages/designs/headers_page.dart';
+import 'package:custom_painter/src/pages/animations/animations_page.dart';
+// import 'package:custom_painter/src/pages/designs/headers_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Designs and Animations',
-      home: HeadersPage(),
+      home: AnimationsPage(),
     );
   }
 }
