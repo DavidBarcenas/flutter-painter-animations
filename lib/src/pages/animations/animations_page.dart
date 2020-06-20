@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:math' as Math;
 
 class AnimationsPage extends StatelessWidget {
 
@@ -26,8 +26,17 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   @override
   void initState() { 
     super.initState();
-    controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
-    rotacion = Tween(begin: 0.0, end: 2.0).animate(controller);
+    controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 3000));
+    rotacion = Tween(begin: 0.0, end: 2 * Math.pi).animate(controller);
+
+    controller.addListener(() {
+      if(controller.status == AnimationStatus.completed) {
+        controller.reverse();
+      }
+      //  else if(controller.status == AnimationStatus.dismissed) {
+      //   controller.forward();
+      // }
+    });
   }
 
   @override
