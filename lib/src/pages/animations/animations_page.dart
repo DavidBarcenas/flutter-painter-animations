@@ -21,13 +21,19 @@ class SquareAnimated extends StatefulWidget {
 class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProviderStateMixin {
 
   AnimationController controller;
-  Animation<double> rotacion;
+  Animation<double> rotation;
+  Animation<double> opacityAnimation;
 
   @override
   void initState() { 
     super.initState();
     controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 3000));
-    rotacion = Tween(begin: 0.0, end: 2 * Math.pi).animate(controller);
+
+    rotation = Tween(begin: 0.0, end: 2 * Math.pi).animate(
+      CurvedAnimation(parent: controller, curve: Curves.easeOut)
+    );
+
+    opacityAnimation = Tween(begin: 0.1, end: 1.0).animate(controller);
 
     controller.addListener(() {
       if(controller.status == AnimationStatus.completed) {
@@ -53,11 +59,14 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
 
     return AnimatedBuilder(
       animation: controller,
-      // child: child,
+      child: _Rectangulo(),
       builder: (BuildContext context, Widget child) {
         return Transform.rotate(
-          angle: rotacion.value,
-          child: _Rectangulo()
+          angle: rotation.value,
+          child: Opacity(
+            opacity: opacityAnimation.value,
+            child: child,
+          )
         );
       },
     );
