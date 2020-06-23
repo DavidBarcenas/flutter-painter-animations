@@ -23,6 +23,7 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   AnimationController controller;
   Animation<double> rotation;
   Animation<double> opacityAnimation;
+  Animation<double> opacityAnimationOut;
   Animation<double> moveToRight;
   Animation<double> scaleFigure;
 
@@ -36,7 +37,11 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
     );
 
     opacityAnimation = Tween(begin: 0.1, end: 1.0).animate(
-      CurvedAnimation(parent: controller, curve: Interval(0, 0.33, curve: Curves.easeOut))
+      CurvedAnimation(parent: controller, curve: Interval(0, 0.33, curve: Curves.easeOut)),
+    );
+   
+    opacityAnimationOut = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: controller, curve: Interval(0.75, 1, curve: Curves.easeOut)),
     );
 
     moveToRight = Tween(begin: 0.0, end: 200.0).animate(
@@ -78,7 +83,7 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
           child: Transform.rotate(
             angle: rotation.value,
             child: Opacity(
-              opacity: opacityAnimation.value,
+              opacity: opacityAnimation.value - opacityAnimationOut.value,
               child: Transform.scale(
                 scale: scaleFigure.value,
                 child: child
@@ -96,7 +101,7 @@ class _Rectangulo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 70,
-      height: 70,
+      height: 70,  
       decoration: BoxDecoration(
         color: Colors.blue
       ),
