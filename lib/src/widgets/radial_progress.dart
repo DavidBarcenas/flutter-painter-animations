@@ -78,6 +78,11 @@ class _RadialProgressPainter extends CustomPainter {
   // Circle
   @override
   void paint(Canvas canvas, Size size) {
+    final gradient = LinearGradient(
+        colors: [Color(0xffc012ff), Color(0xff6d05e8), Colors.red]);
+
+    final rect = Rect.fromCircle(center: Offset(0, 0), radius: 180);
+
     final paint = new Paint()
       ..strokeWidth = 4
       ..color = secodaryColor
@@ -91,6 +96,8 @@ class _RadialProgressPainter extends CustomPainter {
     final paintArc = new Paint()
       ..strokeWidth = 10
       ..color = color
+      // ..shader = gradient.createShader(rect)
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     // filling progress
