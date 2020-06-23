@@ -30,7 +30,10 @@ class _ProgressPageState extends State<ProgressPage> {
           width: square,
           height: square,
           // color: Colors.red,
-          child: RadialProgress(percentage: percentage),
+          child: RadialProgress(
+            percentage: percentage,
+            selectedColor: Colors.deepPurple,
+          ),
         ),
       ),
     );

@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 
 class RadialProgress extends StatefulWidget {
   final percentage;
+  final Color selectedColor;
+  final Color secondaryColor;
 
-  RadialProgress({@required this.percentage});
+  RadialProgress(
+      {@required this.percentage,
+      this.selectedColor = Colors.deepOrange,
+      this.secondaryColor = Colors.grey});
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -40,13 +45,25 @@ class _RadialProgressState extends State<RadialProgress>
       animation: controller,
       // child: child,
       builder: (BuildContext context, Widget child) {
-        return Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: CustomPaint(
-                painter: _RadialProgressPainter(
-                    (widget.percentage - percentageAnimate) +
-                        (percentageAnimate * controller.value))));
+        return Stack(
+          children: <Widget>[
+            Container(
+                width: double.infinity,
+                height: double.infinity,
+                child: CustomPaint(
+                    painter: _RadialProgressPainter(
+                        (widget.percentage - percentageAnimate) +
+                            (percentageAnimate * controller.value),
+                        widget.selectedColor,
+                        widget.secondaryColor))),
+            Container(
+              alignment: Alignment.center,
+              child: (Text(widget.percentage.round().toString() + '%',
+                  style:
+                      TextStyle(fontSize: 45.0, color: widget.selectedColor))),
+            )
+          ],
+        );
       },
     );
   }
@@ -54,15 +71,16 @@ class _RadialProgressState extends State<RadialProgress>
 
 class _RadialProgressPainter extends CustomPainter {
   final percentage;
-
-  _RadialProgressPainter(this.percentage);
+  final color;
+  final secodaryColor;
+  _RadialProgressPainter(this.percentage, this.color, this.secodaryColor);
 
   // Circle
   @override
   void paint(Canvas canvas, Size size) {
     final paint = new Paint()
       ..strokeWidth = 4
-      ..color = Colors.grey
+      ..color = secodaryColor
       ..style = PaintingStyle.stroke;
 
     final c = new Offset(size.width * 0.5, size.height * 0.5);
@@ -72,7 +90,7 @@ class _RadialProgressPainter extends CustomPainter {
     // Arco
     final paintArc = new Paint()
       ..strokeWidth = 10
-      ..color = Colors.deepOrange
+      ..color = color
       ..style = PaintingStyle.stroke;
 
     // filling progress
