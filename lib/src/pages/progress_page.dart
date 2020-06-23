@@ -8,15 +8,21 @@ class ProgressPage extends StatefulWidget {
 }
 
 class _ProgressPageState extends State<ProgressPage> {
+  double percentage = 10;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.refresh),
+          backgroundColor: Colors.deepOrange,
+          onPressed: () => setState(() => percentage += 10)),
       body: Center(
         child: Container(
           width: 300,
           height: 300,
           // color: Colors.pinkAccent,
-          child: CustomPaint(painter: _RadialProgressPainter(50)),
+          child: CustomPaint(painter: _RadialProgressPainter(percentage)),
         ),
       ),
     );
