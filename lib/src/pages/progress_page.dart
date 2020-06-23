@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,31 @@ class ProgressPage extends StatefulWidget {
   _ProgressPageState createState() => _ProgressPageState();
 }
 
-class _ProgressPageState extends State<ProgressPage> {
+class _ProgressPageState extends State<ProgressPage>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
   double percentage = 10;
+  double newPercentage = 10;
+
+  @override
+  void initState() {
+    controller = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 300));
+    controller.addListener(() {
+      // print('valor controller: ${controller.value}');
+      setState(() {
+        this.percentage =
+            lerpDouble(this.percentage, this.newPercentage, controller.value);
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +40,33 @@ class _ProgressPageState extends State<ProgressPage> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.refresh),
           backgroundColor: Colors.deepOrange,
-          onPressed: () => setState(() => percentage += 10)),
+          onPressed: () => setState(() {
+                this.percentage = this.newPercentage;
+                this.newPercentage += 10;
+                if (this.newPercentage > 100) {
+                  this.newPercentage = 0;
+                  this.percentage = 0;
+                }
+                controller.forward(from: 0.0);
+              })),
       body: Center(
-        child: Container(
-          width: 300,
-          height: 300,
-          // color: Colors.pinkAccent,
-          child: CustomPaint(painter: _RadialProgressPainter(percentage)),
-        ),
+        child: Stack(children: [
+          Container(
+            width: 300,
+            height: 300,
+            // color: Colors.pinkAccent,
+            child: CustomPaint(painter: _RadialProgressPainter(percentage)),
+          ),
+          Container(
+            width: 300,
+            height: 300,
+            alignment: Alignment.center,
+            child: Text(
+              this.newPercentage.round().toString(),
+              style: TextStyle(fontSize: 45.0, color: Colors.grey),
+            ),
+          )
+        ]),
       ),
     );
   }
